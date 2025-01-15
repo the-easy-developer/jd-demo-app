@@ -1,3 +1,7 @@
+# JD Homework
+
+In order to run the app, execute `npm run dev` in the root folder. The folder structure is self-explanatory.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
