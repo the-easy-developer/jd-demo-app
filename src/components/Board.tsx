@@ -1,43 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
-import styled from "styled-components";
 
-import data from '../data.json';
+import data from "../assets/data";
 
 import Score from "./Score";
 
-const Item = styled.div<{$index: number}>`
-  display: flex;
-  gap: 10px;
-  height: 40px;
-  align-items: center;
-  padding: 0px 4px;
-  transition: top 1s ease-in-out;
-  position: absolute;
-  width: 100%;
-  top: ${props => `${props.$index * 40}px`};
-  border-bottom: 1px solid #ccc;
-  background-color: ${props => props.$index % 2 === 0 ? "#e8faf7" : "#b3f5ea"};
-  box-sizing: border-box;
-`;
-
-const DisplayPicture = styled.div`
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-  background-color: #f5bf42;
-  line-height: 1.8;
-  color: #fff;
-`;
-
-const Container = styled.div`
-  width: 600px;
-  height: 400px;
-  position: relative;
-
-  @media (max-width: 600px) {
-    max-width: 100vw;
-  }
-`;
+import BoardContainer from "./BoardContainer";
+import DisplayPicture from "./DisplayPicture";
+import BoardItem from "./BoardItem";
+import Rank from "./Rank";
 
 const relevantData = data.map(d => [d.userID, d.score]) as [string, number][];
 
@@ -49,7 +19,7 @@ export default function Board() {
     return list.reduce((acc, cur, position) => {
       acc[cur[0]] = { score: cur[1], position };
       return acc;
-    }, {} as {[key: string]: { score: number; position: number; }});
+    }, {} as { [key: string]: { score: number; position: number; } });
   }, [list]);
 
   useEffect(() => {
@@ -73,17 +43,19 @@ export default function Board() {
   }, [list]);
 
   return (
-    <Container>
+    <BoardContainer>
       {
-        data.map(({ userID, displayName }) => (
-          <Item key={userID} id={userID} $index={scoreMap[userID].position}>
-            {scoreMap[userID].position + 1}
-            <DisplayPicture> {displayName.slice(0, 1)} </DisplayPicture>
-            <p> {displayName} </p>
-            <Score score={scoreMap[userID].score}/>
-          </Item>
+        data.map(({ userID, displayName, picture }) => (
+          <BoardItem key={userID} id={userID} $index={scoreMap[userID].position} $last={scoreMap[userID].position === list.length - 1}>
+            <div>
+              <Rank $rank={scoreMap[userID].position}> {scoreMap[userID].position + 1} </Rank>
+              <DisplayPicture src={picture} />
+              <p> {displayName} </p>
+            </div>
+            <Score score={scoreMap[userID].score} />
+          </BoardItem>
         ))
       }
-    </Container>
+    </BoardContainer>
   );
 }

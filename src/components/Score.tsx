@@ -5,9 +5,7 @@ import usePrevious from "../utils/usePrevious";
 import animateValue from "../utils/animateValue";
 
 const ScoreUI = styled.div`
-  position: absolute;
   font-weight: 700;
-  right: 4px;
 
   & > span:last-child {
     font-weight: normal;
